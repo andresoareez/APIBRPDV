@@ -7,13 +7,21 @@ class Estados(models.Model):
     nome = models.CharField(max_length=50, unique=True)
     sigla = models.CharField(max_length=2, unique=True)
 
+    class Meta:
+        verbose_name = 'Estado'
+        verbose_name_plural = 'Estados'
+
     def __str__(self):
         return self.nome
 
 
-class Regional(models.Model):
+class Regionais(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name = 'Regional'
+        verbose_name_plural = 'Regionais'
 
     def __str__(self):
         return self.nome
@@ -23,6 +31,10 @@ class Rede(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=20, unique=True)
 
+    class Meta:
+        verbose_name = 'Rede'
+        verbose_name_plural = 'Redes'
+
     def __str__(self):
         return self.nome
 
@@ -31,17 +43,21 @@ class Bandeira(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=50, unique=True)
 
+    class Meta:
+        verbose_name = 'Bandeira'
+        verbose_name_plural = 'Bandeiras'
+
     def __str__(self):
         return self.nome
 
 
 class PontodeVenda(models.Model):
     Regional = [
-        ('Nordeste','NE')
-        ('Norte', 'NO')
-        ('Centro-Oeste', 'CEO')
-        ('Sudeste', 'SUD')
-        ('Sul', 'SU')
+        ('Nordeste', 'NE'),
+        ('Norte', 'NO'),
+        ('Centro-Oeste', 'CEO'),
+        ('Sudeste', 'SUD'),
+        ('Sul', 'SU'),
     ]
 
     # Estados = [
@@ -72,17 +88,18 @@ class PontodeVenda(models.Model):
     #     ('TO', 'Tocantins')
     # ]
     CANALPDV = [
-        ('Atacado', 'Atacado')
-        ('Varejo', 'Varejo')
+        ('Atacado', 'Atacado'),
+        ('Varejo', 'Varejo'),
 
     ]
 
     id = models.AutoField(primary_key=True)
     PDV = models.CharField(max_length=200, unique=True, verbose_name='Ponto de Venda')
     bandeira = models.ForeignKey(Bandeira, to_field='nome', on_delete=models.CASCADE)
+    rede = models.ForeignKey(Rede, to_field='nome', on_delete=models.CASCADE)
     canal = models.CharField(max_length=10, choices=CANALPDV, verbose_name='Canal do PDV')
-    macroRegional = models.CharField(max_length=50, to_field=Regional, verbose_name='Macroregional')
-    regional = models.ForeignKey(Regional, to_field='name', verbose_name='Regional', on_delete=models.CASCADE)
+    macroRegional = models.CharField(max_length=50, choices=Regional, verbose_name='Macroregional')
+    regional = models.ForeignKey(Regionais, to_field='nome', verbose_name='Regional', on_delete=models.CASCADE)
     cidade = models.CharField(max_length=100, verbose_name='Cidade')
     estado = models.ForeignKey(Estados, to_field='sigla', on_delete=models.CASCADE, verbose_name='Estado')
     logradouro = models.CharField(max_length=255, verbose_name='logradouro')
@@ -102,7 +119,7 @@ class PontodeVenda(models.Model):
 
 class CostPassagens(models.Model):
     id = models.AutoField(primary_key=True)
-    cidade = models.ForeignKey(PontodeVenda, to_field='cidade', on_delete=models.CASCADE, db_index=True)
+    cidade = models.CharField(max_length=100, db_index=True, unique=True)
     valeA = models.FloatField(max_length=3, blank=True, null=True)
     valeB = models.FloatField(max_length=3, blank=True, null=True)
     valeC = models.FloatField(max_length=3, blank=True, null=True)
@@ -119,6 +136,8 @@ class CostPassagens(models.Model):
     def __str__(self):
         return self.cidade
 
+    class Meta:
+        verbose_name = 'Mapa de custo de passagens (Transporte publico)'
 
 class PDOHresults(models.Model):
     id = models.AutoField(primary_key=True)

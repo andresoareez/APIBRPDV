@@ -47,30 +47,30 @@ class EstadosAdmin(ImportExportModelAdmin):
 
 class RegionalAdmin(ImportExportModelAdmin):
     list_display = [
-        'nome'
+        'nome',
     ]
     list_filter = [
-        'nome'
+        'nome',
     ]
     list_per_page = 50
 
 
 class RedeAdmin(ImportExportModelAdmin):
     list_display = [
-        'nome'
+        'nome',
     ]
     list_filter = [
-        'nome'
+        'nome',
     ]
     list_per_page = 50
 
 
 class BandeiraAdmin(ImportExportModelAdmin):
     list_display = [
-        'nome'
+        'nome',
     ]
     list_filter = [
-        'nome'
+        'nome',
     ]
     list_per_page = 50
 
@@ -85,12 +85,12 @@ class PassagensAdmin(ImportExportModelAdmin):
     list_per_page = 50
 
 
-admin.site.register(BandeiraAdmin, Bandeira)
-admin.site.register(PassagensAdmin, CostPassagens)
-admin.site.register(RedeAdmin, Rede)
-admin.site.register(RegionalAdmin, Regional)
-admin.site.register(EstadosAdmin, Estados)
-admin.site.register(PontodeVendaAdmin, PontodeVenda)
+admin.site.register(Bandeira, BandeiraAdmin)
+admin.site.register(CostPassagens, PassagensAdmin)
+admin.site.register(Rede, RedeAdmin)
+admin.site.register(Regionais, RegionalAdmin)
+admin.site.register(Estados, EstadosAdmin)
+admin.site.register(PontodeVenda, PontodeVendaAdmin)
 
 
 

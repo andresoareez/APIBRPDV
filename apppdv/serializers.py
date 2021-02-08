@@ -1,6 +1,6 @@
 from abc import ABC
 from rest_framework import serializers
-from .models import Estados, PontodeVenda, Rede, Bandeira, Regional, PDOHresults
+from .models import Estados, PontodeVenda, Rede, Bandeira, Regionais, PDOHresults
 
 
 class EstadosSerializer(serializers.Serializer, ABC):
@@ -30,7 +30,7 @@ class BandeiraSerializer(serializers.Serializer, ABC):
 
 class RegionalSerializer(serializers.Serializer, ABC):
     class Meta:
-        model = Regional
+        model = Regionais
         fields = '__all__'
 
 
