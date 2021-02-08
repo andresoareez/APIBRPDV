@@ -11,7 +11,7 @@ class Estados(models.Model):
         return self.nome
 
 
-class regional(models.Model):
+class Regional(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, unique=True)
 
@@ -72,7 +72,7 @@ class PontodeVenda(models.Model):
     #     ('TO', 'Tocantins')
     # ]
     CANALPDV = [
-        ('ATACADO', 'Atacado')
+        ('Atacado', 'Atacado')
         ('Varejo', 'Varejo')
 
     ]
@@ -82,7 +82,7 @@ class PontodeVenda(models.Model):
     bandeira = models.ForeignKey(Bandeira, to_field='nome', on_delete=models.CASCADE)
     canal = models.CharField(max_length=10, choices=CANALPDV, verbose_name='Canal do PDV')
     macroRegional = models.CharField(max_length=50, to_field=Regional, verbose_name='Macroregional')
-    regional = models.ForeignKey(regional, to_field='name', verbose_name='Regional', on_delete=models.CASCADE)
+    regional = models.ForeignKey(Regional, to_field='name', verbose_name='Regional', on_delete=models.CASCADE)
     cidade = models.CharField(max_length=100, verbose_name='Cidade')
     estado = models.ForeignKey(Estados, to_field='sigla', on_delete=models.CASCADE, verbose_name='Estado')
     logradouro = models.CharField(max_length=255, verbose_name='logradouro')
@@ -92,7 +92,6 @@ class PontodeVenda(models.Model):
     latitude = models.CharField(max_length=30)
     longitude = models.CharField(max_length=30)
 
-
     class Meta:
         verbose_name = 'Ponto de Venda'
         verbose_name_plural = 'Pontos de Venda'
@@ -100,4 +99,36 @@ class PontodeVenda(models.Model):
     def __str__(self):
         return self.PDV
 
-# Create your models here.
+
+class CostPassagens(models.Model):
+    id = models.AutoField(primary_key=True)
+    cidade = models.ForeignKey(PontodeVenda, to_field='cidade', on_delete=models.CASCADE, db_index=True)
+    valeA = models.FloatField(max_length=3, blank=True, null=True)
+    valeB = models.FloatField(max_length=3, blank=True, null=True)
+    valeC = models.FloatField(max_length=3, blank=True, null=True)
+    valeD = models.FloatField(max_length=3, blank=True, null=True)
+    valeE = models.FloatField(max_length=3, blank=True, null=True)
+    valeF = models.FloatField(max_length=3, blank=True, null=True)
+    valeG = models.FloatField(max_length=3, blank=True, null=True)
+    imA = models.FloatField(max_length=5, blank=True, null=True, verbose_name='InterMunicipal 10 km')
+    imB = models.FloatField(max_length=5, blank=True, null=True, verbose_name='InterMunicipal 30 km')
+    imC = models.FloatField(max_length=5, blank=True, null=True, verbose_name='InterMunicipal 50 km')
+    imD = models.FloatField(max_length=5, blank=True, null=True, verbose_name='InterMunicipal 70 km')
+    imE = models.FloatField(max_length=5, blank=True, null=True, verbose_name='InterMunicipal 90 km')
+
+    def __str__(self):
+        return self.cidade
+
+
+class PDOHresults(models.Model):
+    id = models.AutoField(primary_key=True)
+    colaborador = models.CharField(max_length=100, db_index=True, unique=True, verbose_name='Promotores')
+    produtividade = models.TimeField(auto_now=False, auto_now_add=False, verbose_name='Produtividade')
+    deslocamento = models.TimeField(auto_now=False, auto_now_add=False, verbose_name='Deslocamento')
+    ocio = models.TimeField(auto_now=False, auto_now_add=False, verbose_name='Ócio')
+    hrsnaocontab = models.TimeField(auto_now=False, auto_now_add=False, verbose_name='Horas não contabilizadas')
+
+    def __str__(self):
+        return self.colaborador
+
+
